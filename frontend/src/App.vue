@@ -7,15 +7,22 @@
   
   <script>
   import Navbar from './components/Navbar.vue';
+  import { ref } from 'vue';
+  import InputText from 'primevue/inputtext';
+  import Dropdown from 'primevue/dropdown';
+  import Calendar from 'primevue/calendar';
 
   export default {
     components: {
-      Navbar
+      Navbar,
+      InputText,
+      Dropdown,
+      Calendar
     }
   };
   </script>
   <style>
     body{
-      font-family: Calibri;
+      font-family: 'Roboto Slab', serif;
     }
   </style>
