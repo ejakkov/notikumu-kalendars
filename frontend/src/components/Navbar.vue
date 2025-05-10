@@ -8,15 +8,15 @@
       <div class="title">
         
         <div class="logo">
-          <img src="../assets/notikumukalendars-logo.png" alt="Logo" class="logo" />
+          <router-link to="/"><img src="../assets/notikumukalendars-logo.png" alt="Logo" class="logo" /></router-link>
         </div>
-        <p>Notikumu kalendārs</p>
+        <router-link to="/"><p>Notikumu kalendārs</p></router-link>
       </div>
       <div>
-        <router-link to="/">
+        <router-link to="/favorites">
           <img src="../assets/heart.png" alt="Logo" class="header-icons" />
         </router-link>
-        <router-link to="/favorites">
+        <router-link to="/">
           <img src="../assets/bell.png" alt="Logo" class="header-icons" />
         </router-link>
         <router-link to="/login">
@@ -29,7 +29,9 @@
 </template>
 
 <style>
-
+body{
+  margin: 0;
+}
 .wrapper {
   display: flex;
   align-items: center;
@@ -55,6 +57,10 @@ nav {
   align-items: center;
   font-size: 1.5rem;
   gap: 1rem;
+}
+.title a{
+  text-decoration: none;
+  color: black;
 }
 
 .language-toggler {
