@@ -5,7 +5,7 @@
       <div>
         <button class="language-toggler">LV</button>
       </div>
-      <div class="title">
+      <div class="nav-title">
         
         <div class="logo">
           <router-link to="/"><img src="../assets/notikumukalendars-logo.png" alt="Logo" class="logo" /></router-link>
@@ -52,13 +52,14 @@ nav {
   border-radius: 50%;
 }
 
-.title {
+.nav-title {
   display: flex;
   align-items: center;
   font-size: 1.5rem;
   gap: 1rem;
+  margin-left: 120px;
 }
-.title a{
+.nav-title a{
   text-decoration: none;
   color: black;
 }

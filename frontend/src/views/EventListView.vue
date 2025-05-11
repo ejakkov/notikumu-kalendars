@@ -1,15 +1,17 @@
 <template>
   <div class="filters">
+    <div class="filters-dropdowns">
+      <Dropdown v-model="selectedCategory" :options="['a', 'b']" placeholder="Kategorija" />
+      <Dropdown v-model="selectedCategory" :options="['a', 'b']" placeholder="Atrašanās vieta" />
+    </div>
     <input v-model="search" placeholder="Meklēt notikumu..." />
-    <Dropdown v-model="selectedCategory" :options="categories" placeholder="Kategorija" />
-    <Calendar v-model="selectedDate" placeholder="Datums" />
   </div>
   <div class="event-list-view">
     <div class="event-list">
       <!-- <div v-for="event in filteredEvents" :key="event.id" class="event-card">
         <img class="card-image" :src="event.image" />
         <p class="date-category">{{ formatDate(event.date) }} - {{ event.category }}</p>
-        <template class="title">{{ event.title }}</template>
+        <div class="title">{{ event.title }}</div>
         <div class="content">
           <p> <img src="../assets/compass.png" class="location-icon">{{ event.location }}</p>
           <p>{{ event.description }}</p>
@@ -34,6 +36,11 @@
 </template>
 
 <style scoped>
+.filters-dropdowns {
+  display: flex;
+  gap: 20px;
+}
+
 .date-category {
   font-size: 0.9rem;
   color: #888;
@@ -41,7 +48,7 @@
 }
 
 input {
-  height: 50%;
+  height: 100%;
 }
 .filters {
   align-items: center;
@@ -71,6 +78,7 @@ h1 {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
+  justify-content: space-between;
 }
 
 p {
@@ -125,14 +133,12 @@ p {
 <script setup>
 import { ref, computed } from 'vue';
 import { InputText } from 'primevue/inputtext';
-import { Dropdown } from 'primevue/dropdown';
-import { Calendar } from 'primevue/calendar';
-import { Card } from 'primevue/card';
 
+import { Card } from 'primevue/card';
+import Dropdown from 'primevue/dropdown';
+import Calendar from 'primevue/calendar';
 const components = {
   InputText,
-  Dropdown,
-  Calendar,
   Card
 };
 
@@ -145,10 +151,10 @@ const categories = ['Kultūra', 'Mūzika', 'Sports'];
 const events = ref([
   {
     id: 1,
-    title: 'Rīgas svētki',
+    title: 'J. Purviņa personīgā izstāde',
     date: new Date('2025-08-18'),
     location: 'Rīga',
-    description: 'Koncerti un salūts centrā.',
+    description: 'Autora mākslas darbi.',
     category: 'Koncerts',
     image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
   },
@@ -159,7 +165,7 @@ const events = ref([
     location: 'Jūrmala',
     description: 'Pludmales pasākums.',
     category: 'Festivāls',
-    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/Arheologiskie%20pr.jpg?itok=QWlAKsgB'
+    image: 'https://media.timeout.com/images/106204051/1920/1440/image.webp'
   },
   {
     id: 3,
@@ -168,16 +174,34 @@ const events = ref([
     location: 'Rīga',
     description: 'Koncerti un salūts centrā.',
     category: 'Koncerts',
-    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
+    image: 'https://pbs.twimg.com/profile_images/1013769074860527618/zzRcZHCP_400x400.jpg'
   },
   {
     id: 4,
-    title: 'Jūrmalas festivāls',
+    title: 'Arheoloģiskā konference',
     date: new Date('2025-07-10'),
     location: 'Jūrmala',
     description: 'Pludmales pasākums.',
     category: 'Festivāls',
     image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/Arheologiskie%20pr.jpg?itok=QWlAKsgB'
+  },
+    {
+    id: 5,
+    title: 'J. Purviņa personīgā izstāde',
+    date: new Date('2025-08-18'),
+    location: 'Rīga',
+    description: 'Autora mākslas darbi.',
+    category: 'Koncerts',
+    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
+  },
+  {
+    id: 6,
+    title: 'Jūrmalas festivāls',
+    date: new Date('2025-07-10'),
+    location: 'Jūrmala',
+    description: 'Pludmales pasākums.',
+    category: 'Festivāls',
+    image: 'https://media.timeout.com/images/106204051/1920/1440/image.webp'
   }
 ]);
 
