@@ -6,7 +6,7 @@
   </div>
   <div class="event-list-view">
     <div class="event-list">
-      <div v-for="event in filteredEvents" :key="event.id" class="event-card">
+      <!-- <div v-for="event in filteredEvents" :key="event.id" class="event-card">
         <img class="card-image" :src="event.image" />
         <p class="date-category">{{ formatDate(event.date) }} - {{ event.category }}</p>
         <template class="title">{{ event.title }}</template>
@@ -14,7 +14,21 @@
           <p> <img src="../assets/compass.png" class="location-icon">{{ event.location }}</p>
           <p>{{ event.description }}</p>
         </div>
+      </div> -->
+      <router-link
+        v-for="event in filteredEvents"
+        :key="event.id"
+        :to="{ name: 'EventDetail', params: { id: event.id } }"
+        class="event-card"
+         style="text-decoration: none; color: inherit;">
+        <img class="card-image" :src="event.image" />
+        <p class="date-category">{{ formatDate(event.date) }} - {{ event.category }}</p>
+        <template class="title">{{ event.title }}</template>
+      <div class="content">
+        <p><img src="../assets/compass.png" class="location-icon" />{{ event.location }}</p>
+        <p>{{ event.description }}</p>
       </div>
+    </router-link>
     </div>
   </div>
 </template>

@@ -13,6 +13,7 @@
         </div>
         <div class="login-footer">
           <a href="#">Aizmirsu paroli</a>
+          <a href="/register">Reģistrēties</a>
           <button>Autorizēties</button>
         </div>
       </div>
