@@ -9,15 +9,11 @@
   import Navbar from './components/Navbar.vue';
   import { ref } from 'vue';
   import InputText from 'primevue/inputtext';
-  import Dropdown from 'primevue/dropdown';
-  import Calendar from 'primevue/calendar';
 
   export default {
     components: {
       Navbar,
-      InputText,
-      Dropdown,
-      Calendar
+      InputText
     }
   };
   </script>
