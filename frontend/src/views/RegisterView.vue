@@ -9,9 +9,6 @@
         <label for="input-name">Vārds</label>
         <input id="input-name" type="text" name="name" v-model="name" />
 
-        <label for="input-surname">Uzvārds</label>
-        <input id="input-surname" type="text" name="surname" v-model="surnamename" />
-
 
         <label for="input-email">E-pasts</label>
         <input id="input-email" type="email" name="email" v-model="email" />
@@ -31,26 +28,34 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { ref } from 'vue';
 
 const name = ref('');
 const email = ref('');
-const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 
 function register() {
   if (password.value !== confirmPassword.value) {
-    console.log('Paroles nesakrīt!');
+    alert('Paroles nesakrīt!');
     return;
   }
 
-  console.log('Reģistrācija (veiksme!):', {
+  axios.post('http://localhost:5000/api/auth/register', {
     name: name.value,
     email: email.value,
-    username: username.value,
     password: password.value,
-  });
+    isAdmin: false
+  })
+  .then((response) => {
+    this.router.push('/');
+    console.log(response.data);
+  })
+  .catch((error) => {
+    alert("Reģistrācija neveiksmīga!");
+    console.error("Login error: ", error);
+  })
 }
 </script>
 

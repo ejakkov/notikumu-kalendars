@@ -7,7 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-// const itemsRoute = require('./routes/items'); // Import the items route
+const authRoute = require('./routes/auth.js'); // Import the auth route
+const eventRoute = require('./routes/event.js'); // Import the event route
 
 
 // Middleware
@@ -19,7 +20,8 @@ app.get('/', (req, res) => {
   res.send('Server is running');
 });
 
-// app.use('/api/items', itemsRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/event', eventRoute);
 
 // MongoDB Connection
 mongoose.connect(MONGO_URI, {
