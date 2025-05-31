@@ -6,27 +6,45 @@
         <button class="language-toggler">LV</button>
       </div>
       <div class="nav-title">
-        
         <div class="logo">
           <router-link to="/"><img src="../assets/notikumukalendars-logo.png" alt="Logo" class="logo" /></router-link>
         </div>
         <router-link to="/"><p>Notikumu kalendārs</p></router-link>
       </div>
       <div>
-        <router-link to="/favorites">
+        <router-link v-if="isLoggedIn" to="/favorites">
           <img src="../assets/heart.png" alt="Logo" class="header-icons" />
         </router-link>
-        <router-link to="/">
+        <router-link v-if="isLoggedIn" to="/">
           <img src="../assets/bell.png" alt="Logo" class="header-icons" />
         </router-link>
-        <router-link to="/login">
+        <router-link v-if="!isLoggedIn" to="/login">
           <img src="../assets/account.png" alt="Logo" class="header-icons" />
         </router-link>
+        <span style="cursor: pointer" v-if="isLoggedIn" @click="logout()">
+          <img src="../assets/logout.png" alt="Logo" class="header-icons" />
+        </span>
       </div>
       
     </nav>
   </div>
 </template>
+
+<script setup>
+import { inject, ref } from 'vue';
+import router from "../router";
+
+var isLoggedIn = inject('isLoggedIn');
+if(localStorage.getItem("authToken") !== null){
+  isLoggedIn.value = true;
+}
+
+function logout(){
+  isLoggedIn.value = false;
+  localStorage.removeItem("authToken");
+  router.push("/")
+}
+</script>
 
 <style>
 body{
@@ -57,7 +75,6 @@ nav {
   align-items: center;
   font-size: 1.5rem;
   gap: 1rem;
-  margin-left: 120px;
 }
 .nav-title a{
   text-decoration: none;

@@ -6,14 +6,21 @@
   </template>
   
   <script>
+  import { provide, ref } from 'vue';
   import Navbar from './components/Navbar.vue';
-  import { ref } from 'vue';
   import InputText from 'primevue/inputtext';
 
   export default {
     components: {
       Navbar,
       InputText
+    },
+    setup(){
+      var isLoggedIn = ref(false);
+      provide('isLoggedIn', isLoggedIn)
+      return {
+        isLoggedIn
+      }
     }
   };
   </script>

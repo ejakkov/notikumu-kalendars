@@ -19,8 +19,8 @@
       </div> -->
       <router-link
         v-for="event in filteredEvents"
-        :key="event.id"
-        :to="{ name: 'EventDetail', params: { id: event.id } }"
+        :key="event._id"
+        :to="{ name: 'EventDetail', params: { id: event._id } }"
         class="event-card"
          style="text-decoration: none; color: inherit;">
         <img class="card-image" :src="event.image" />
@@ -133,7 +133,7 @@ p {
 <script setup>
 import { ref, computed } from 'vue';
 import { InputText } from 'primevue/inputtext';
-
+import axios from 'axios';
 import { Card } from 'primevue/card';
 import Dropdown from 'primevue/dropdown';
 import Calendar from 'primevue/calendar';
@@ -148,62 +148,17 @@ const selectedDate = ref(null);
 
 const categories = ['Kultūra', 'Mūzika', 'Sports'];
 
-const events = ref([
-  {
-    id: 1,
-    title: 'J. Purviņa personīgā izstāde',
-    date: new Date('2025-08-18'),
-    location: 'Rīga',
-    description: 'Autora mākslas darbi.',
-    category: 'Koncerts',
-    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
-  },
-  {
-    id: 2,
-    title: 'Jūrmalas festivāls',
-    date: new Date('2025-07-10'),
-    location: 'Jūrmala',
-    description: 'Pludmales pasākums.',
-    category: 'Festivāls',
-    image: 'https://media.timeout.com/images/106204051/1920/1440/image.webp'
-  },
-  {
-    id: 3,
-    title: 'Rīgas svētki',
-    date: new Date('2025-08-18'),
-    location: 'Rīga',
-    description: 'Koncerti un salūts centrā.',
-    category: 'Koncerts',
-    image: 'https://pbs.twimg.com/profile_images/1013769074860527618/zzRcZHCP_400x400.jpg'
-  },
-  {
-    id: 4,
-    title: 'Arheoloģiskā konference',
-    date: new Date('2025-07-10'),
-    location: 'Jūrmala',
-    description: 'Pludmales pasākums.',
-    category: 'Festivāls',
-    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/Arheologiskie%20pr.jpg?itok=QWlAKsgB'
-  },
-    {
-    id: 5,
-    title: 'J. Purviņa personīgā izstāde',
-    date: new Date('2025-08-18'),
-    location: 'Rīga',
-    description: 'Autora mākslas darbi.',
-    category: 'Koncerts',
-    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
-  },
-  {
-    id: 6,
-    title: 'Jūrmalas festivāls',
-    date: new Date('2025-07-10'),
-    location: 'Jūrmala',
-    description: 'Pludmales pasākums.',
-    category: 'Festivāls',
-    image: 'https://media.timeout.com/images/106204051/1920/1440/image.webp'
-  }
-]);
+const events = ref([]);
+
+axios.post('http://localhost:5000/api/event/list', {
+  token: localStorage.getItem("authToken")
+})
+.then((response) => {
+  events.value = response.data;
+})
+.catch((error) => {
+  console.log(error);
+})
 
 const filteredEvents = computed(() => {
   return events.value.filter(ev => {
