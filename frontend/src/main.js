@@ -7,7 +7,7 @@ import Dropdown from 'primevue/dropdown';
 import Calendar from 'primevue/calendar';
 
 import 'primeicons/primeicons.css';
-// import 'primevue/resources/primevue.min.css';
+import 'primevue/resources/primevue.min.css';
 const app = createApp(App);
 
 app.use(router);
