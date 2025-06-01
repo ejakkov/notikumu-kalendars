@@ -1,4 +1,3 @@
-import events from EventListView.vue
 <template>
   <div class="event-detail" v-if="event">
     <div style="float: right;" v-if="isLoggedIn">
@@ -23,22 +22,24 @@ import events from EventListView.vue
       referrerpolicy="no-referrer-when-downgrade"
     ></iframe>
   </div>
+  <div v-else class="event-detail">
+    <p>Event not found</p>
+  </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { inject, ref, computed } from 'vue';
+import { inject, ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 
 const route = useRoute();
 const id = route.params.id;
+var isLoggedIn = inject('isLoggedIn');
 
-
-var isLoggedIn = inject('isLoggedIn')
-
+// Use the same events data as in EventListView
 const events = ref([
   {
-    id: 1,
+    _id: "1",
     title: 'J. Purviņa personīgā izstāde',
     date: new Date('2025-08-18'),
     location: 'Rīga',
@@ -48,7 +49,7 @@ const events = ref([
     image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
   },
   {
-    id: 2,
+    _id: "2",
     title: 'Jūrmalas svētki',
     date: new Date('2025-07-10'),
     location: 'Jūrmala',
@@ -58,7 +59,7 @@ const events = ref([
     image: 'https://media.timeout.com/images/106204051/1920/1440/image.webp'
   },
   {
-    id: 3,
+    _id: "3",
     title: 'Rīgas svētki',
     date: new Date('2025-08-18'),
     location: 'Rīga',
@@ -68,7 +69,7 @@ const events = ref([
     image: 'https://pbs.twimg.com/profile_images/1013769074860527618/zzRcZHCP_400x400.jpg'
   },
   {
-    id: 4,
+    _id: "4",
     title: 'Ezotēriskā sirošana',
     date: new Date('2025-07-10'),
     location: 'Jūrmala',
@@ -77,8 +78,8 @@ const events = ref([
     category: 'Veselība',
     image: 'https://f11.pmo.ee/VMxu1GB7q7y_3FZcZZv-2dN5M7E=/685x0/filters:focal(0x1171:1440x1921):format(webp)/nginx/o/2020/05/16/13104693t1ha705.jpg'
   },
-    {
-    id: 5,
+  {
+    _id: "5",
     title: 'Jumprava koncerts',
     date: new Date('2025-06-07'),
     location: 'Rīga',
@@ -88,7 +89,7 @@ const events = ref([
     image: 'https://f7.pmo.ee/dwsWF6UtvXzcPcujcV2mCsC1HR0=/1442x0/filters:format(webp)/nginx/o/2025/04/03/16752735t1h3ba6.jpg'
   },
   {
-    id: 6,
+    _id: "6",
     title: 'Valmieras svētki',
     date: new Date('2025-07-25'),
     location: 'Valmiera',
@@ -98,7 +99,7 @@ const events = ref([
     image: 'https://valmierasvin.lv/wp-content/uploads/2025/02/Valmieras-pilsetas-svetki-2025-01-960x720.jpg'
   },
   {
-    id: 7,
+    _id: "7",
     title: 'Rudens Ritmi',
     date: new Date('2025-09-13'),
     location: 'Cēsis',
@@ -108,7 +109,7 @@ const events = ref([
     image: 'https://i0.wp.com/www.cesis2025.lv/wp-content/uploads/2022/09/486117355_1139187134671395_8135691930778064616_n-scaled.jpg?resize=1536%2C674&ssl=1'
   },
   {
-    id: 8,
+    _id: "8",
     title: 'Dzejas dienas Daugavpilī',
     date: new Date('2025-09-05'),
     location: 'Daugavpils',
@@ -118,7 +119,7 @@ const events = ref([
     image: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Daugavpils_museum.jpg'
   },
   {
-    id: 9,
+    _id: "9",
     title: 'Senās mūzikas vakars',
     date: new Date('2025-06-15'),
     location: 'Kuldīga',
@@ -128,7 +129,7 @@ const events = ref([
     image: 'https://static.lsm.lv/media/2021/07/large/1/fo2x.jpg'
   },
   {
-    id: 10,
+    _id: "10",
     title: 'Zaļumballe pie ezera',
     date: new Date('2025-07-20'),
     location: 'Alūksne',
@@ -138,7 +139,7 @@ const events = ref([
     image: 'https://enciklopedija.lv/api/image/thumbnail?name=4e550aacbb37-dd5d9d5c-b541-4cba-9591-626e5e3e61cd.jpg&size=inline'
   },
   {
-    id: 11,
+    _id: "11",
     title: 'Salaspils vasaras kino',
     date: new Date('2025-08-03'),
     location: 'Salaspils',
@@ -148,7 +149,7 @@ const events = ref([
     image: 'https://www.openaircinema.us/cdn/shop/products/25_-Elite-Screen-Rear-Projection_Garbo.jpg?v=1605198952'
   },
   {
-    id: 12,
+    _id: "12",
     title: 'Deju svētku afterparty',
     date: new Date('2025-07-11'),
     location: 'Rīga',
@@ -158,7 +159,7 @@ const events = ref([
     image: 'https://bauskasdzive.lv/wp-content/uploads/2025/05/4c2bbbd403369a33f61350ec1fb571cc-1024x703.jpg'
   },
   {
-    id: 13,
+    _id: "13",
     title: 'Jēkabpils mākslas plenērs',
     date: new Date('2025-07-05'),
     location: 'Jēkabpils',
@@ -168,7 +169,7 @@ const events = ref([
     image: 'https://motivs.lv/images/tuff/103093_02.jpg'
   },
   {
-    id: 14,
+    _id: "14",
     title: 'Talsu amatnieku tirgus',
     date: new Date('2025-06-22'),
     location: 'Talsi',
@@ -178,7 +179,7 @@ const events = ref([
     image: 'https://zinas.nra.lv/_mm/photos/2022-06/860px/566649_af7de0bafe.jpg'
   },
   {
-    id: 15,
+    _id: "15",
     title: 'Ogres gaismas festivāls',
     date: new Date('2025-11-15'),
     location: 'Ogre',
@@ -188,7 +189,7 @@ const events = ref([
     image: 'https://maminuklubs.lv/media/cache/31/d7/31d75448afe0a263642dbe1a86cfbe4c.jpg'
   },
   {
-    id: 16,
+    _id: "16",
     title: 'Liepājas pludmales joga',
     date: new Date('2025-07-12'),
     location: 'Liepāja',
@@ -198,7 +199,7 @@ const events = ref([
     image: 'https://media.tacdn.com/media/attractions-splice-spp-674x446/07/be/2d/fd.jpg'
   },
   {
-    id: 17,
+    _id: "17",
     title: 'Bauskas velosvētki',
     date: new Date('2025-08-24'),
     location: 'Bauska',
@@ -208,7 +209,7 @@ const events = ref([
     image: 'https://scontent.frix5-1.fna.fbcdn.net/v/t39.30808-6/493945770_1271285668332916_2025786850198434337_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vmW1tekNcMoQ7kNvwG47p8U&_nc_oc=Adl1YwcY8sNdJJUtMpvkGUmPdpENqCsVWL_dQZ-q4QNcahZMJfqbEG32aSzrNkF1m93H40NT_9RIKxDh1zj73U8w&_nc_zt=23&_nc_ht=scontent.frix5-1.fna&_nc_gid=r1-wuy_QjNRFOWrA2wcmBQ&oh=00_AfIFvCU1EtEXiZgfLyq7ePTaHnu7-AdjxheToo9txTcREg&oe=68411BC9'
   },
   {
-    id: 18,
+    _id: "18",
     title: 'Līvānu upes svētki',
     date: new Date('2025-07-19'),
     location: 'Līvāni',
@@ -218,7 +219,7 @@ const events = ref([
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoIIKYDOcAfzuvhh0hqvu9pAi4sGBdwmtCpA&s'
   },
   {
-    id: 19,
+    _id: "19",
     title: 'Gaujas pludmales vakars',
     date: new Date('2025-08-09'),
     location: 'Sigulda',
@@ -228,7 +229,7 @@ const events = ref([
     image: 'https://tourism.sigulda.lv/wp-content/uploads/2021/06/Baltic-Pictures-VS-3948_siguldas_pludmale-scaled.jpg?lang=en'
   },
   {
-    id: 20,
+    _id: "20",
     title: 'Ludzas senatnes dienas',
     date: new Date('2025-07-26'),
     location: 'Ludza',
@@ -236,97 +237,82 @@ const events = ref([
     description: 'Viduslaiku tirgus un bruņinieku turnīrs pilsdrupās.',
     category: 'Festivāls',
     image: 'https://www.njherald.com/gcdn/authoring/2019/09/12/NNJH/ghows-TH-68814e43-d715-42a9-8082-1e7c20345fdf-1d78bc4b.jpeg?width=1200&disable=upscale&format=pjpg&auto=webp'
-  },
-  {
-    id: 21,
-    title: 'Ventspils puķu paklāji',
-    date: new Date('2025-08-02'),
-    location: 'Ventspils',
-    coord: "57.39724262434225,21.567524369520033",
-    description: 'Ziedu paklāju izstāde un floristikas meistarklases.',
-    category: 'Izstāde',
-    image: 'https://www.loveyourrug.ca/wp-content/uploads/2019/05/carpet-shopping.jpg'
-  },
-  {
-    id: 22,
-    title: 'Saullēkta meditācija pie Lielupes',
-    date: new Date('2025-07-13'),
-    location: 'Jelgava',
-    coord: "56.64992297283011,23.736179427142446",
-    description: 'Elpošanas vingrinājumi un klusuma rīts dabā.',
-    category: 'Veselība',
-    image: 'https://visit.jelgava.lv/media/k2/galleries/119/lielupeskrasta1.jpg'
-  },
-  {
-    id: 23,
-    title: 'Smiltenes vakara koncerts',
-    date: new Date('2025-07-28'),
-    location: 'Smiltene',
-    coord: "57.42980068284732,25.925654098169947",
-    description: 'Mūzika uz ezera un gaismas šovs.',
-    category: 'Koncerts',
-    image: 'https://www.gogreat.com/imager/s3_us-east-1_amazonaws_com/go-great/images/Images/00-SORT/Craig-Sterken/S232909-ZF-9267-38645-1-176_db672792b0046a856ac315ce4d021821.jpg'
-  },
-  {
-    id: 24,
-    title: 'Mazsalacas taku skrējiens',
-    date: new Date('2025-09-07'),
-    location: 'Mazsalaca',
-    coord: "57.860914,25.046865",
-    description: 'Skrējiens gar Salacas krastiem un dabas takām.',
-    category: 'Sports',
-    image: 'https://hips.hearstapps.com/hmg-prod/images/group-of-female-friends-running-up-forest-trail-royalty-free-image-1714396429.jpg?crop=0.66667xw:1xh;center,top&resize=640:*'
-  },
-  {
-    id: 25,
-    title: 'Vecpiebalgas stāstu vakars',
-    date: new Date('2025-08-29'),
-    location: 'Vecpiebalga',
-    coord: "57.08221433745943,25.813178649443383",
-    description: 'Leģendas, dziesmas un ugunskurs pie Alauksta ezera.',
-    category: 'Literatūra',
-    image: 'https://vecpiebalga.lv/images/gallery/f262108a67caf8abf3dd7c8c47251ebd/000/000/117/s1_11756.jpg'
   }
 ]);
 
-const events = ref([]);
-
-axios.post('http://localhost:5000/api/event/list', {
-  token: localStorage.getItem("authToken")
-})
-.then((response) => {
-  events.value = response.data;
-})
-.catch((error) => {
-  console.log(error);
-})
-
 const event = computed(() => events.value.find(e => e._id === id));
 
-function favoriteEvent(eventId){
+function favoriteEvent(eventId) {
+  if (!isLoggedIn.value) {
+    alert('Please log in to favorite events');
+    return;
+  }
+
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    alert('Please log in to favorite events');
+    return;
+  }
+
   axios.post('http://localhost:5000/api/event/favorite', {
     event: eventId,
-    token: localStorage.getItem("authToken")
+    token: token
   })
   .then((response) => {
-    var temp = event.value;
-    temp.isFavorite = !temp.isFavorite;
-    event.value = temp;
+    const eventToUpdate = events.value.find(e => e._id === eventId);
+    if (eventToUpdate) {
+      eventToUpdate.isFavorite = !eventToUpdate.isFavorite;
+    }
   })
   .catch((error) => {
-    console.log(error);
-  })
+    console.error('Error toggling favorite:', error.response?.data || error.message);
+    if (error.response?.status === 401) {
+      alert('Your session has expired. Please log in again.');
+      isLoggedIn.value = false;
+      localStorage.removeItem("authToken");
+    } else {
+      alert('Failed to update favorite status. Please try again.');
+    }
+  });
 }
+
+// Add function to check favorite status on load
+onMounted(async () => {
+  if (isLoggedIn.value && event.value) {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      isLoggedIn.value = false;
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/event/favorite/check', {
+        event: event.value._id,
+        token: token
+      });
+      const eventToUpdate = events.value.find(e => e._id === event.value._id);
+      if (eventToUpdate) {
+        eventToUpdate.isFavorite = response.data.isFavorite;
+      }
+    } catch (error) {
+      console.error('Error checking favorite status:', error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        isLoggedIn.value = false;
+        localStorage.removeItem("authToken");
+      }
+    }
+  }
+});
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString('lv-LV');
 }
 
 const mapLink = computed(() => {
+  if (!event.value) return '';
   const coord = event.value.coord;
   return `https://www.google.com/maps?q=${coord}&output=embed`;
 });
-
 </script>
 
 <style scoped>

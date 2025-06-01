@@ -30,7 +30,9 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const name = ref('');
 const email = ref('');
 const password = ref('');
@@ -49,7 +51,7 @@ function register() {
     isAdmin: false
   })
   .then((response) => {
-    this.router.push('/');
+    router.push('/');
     console.log(response.data);
   })
   .catch((error) => {

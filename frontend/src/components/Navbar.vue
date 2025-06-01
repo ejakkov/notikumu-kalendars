@@ -1,7 +1,6 @@
 <template>
   <div>
     <nav>
-
       <div>
         <button class="language-toggler">LV</button>
       </div>
@@ -11,21 +10,20 @@
         </div>
         <router-link to="/"><p>Notikumu kalendārs</p></router-link>
       </div>
-      <div>
-        <router-link v-if="isLoggedIn" to="/favorites">
-          <img src="../assets/heart.png" alt="Logo" class="header-icons" />
+      <div class="nav-icons">
+        <router-link v-if="isLoggedIn" to="/favorites" class="icon-link">
+          <i class="pi pi-heart"></i>
         </router-link>
-        <router-link v-if="isLoggedIn" to="/">
+        <router-link v-if="isLoggedIn" to="/" class="icon-link">
           <img src="../assets/bell.png" alt="Logo" class="header-icons" />
         </router-link>
-        <router-link v-if="!isLoggedIn" to="/login">
+        <router-link v-if="!isLoggedIn" to="/login" class="icon-link">
           <img src="../assets/account.png" alt="Logo" class="header-icons" />
         </router-link>
-        <span style="cursor: pointer" v-if="isLoggedIn" @click="logout()">
+        <span style="cursor: pointer" v-if="isLoggedIn" @click="logout()" class="icon-link">
           <img src="../assets/logout.png" alt="Logo" class="header-icons" />
         </span>
       </div>
-      
     </nav>
   </div>
 </template>
@@ -87,12 +85,25 @@ nav {
   border-bottom: 1px solid #000;
 }
 
+.nav-icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon-link {
+  text-decoration: none;
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.icon-link i {
+  font-size: 1.5rem;
+  color: #333;
+}
+
 .header-icons {
   height: 30px;
   width: 30px;
-  margin-left: 1rem;
-}
-router-link {
-  text-decoration: none;
 }
 </style>

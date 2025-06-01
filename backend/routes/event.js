@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const Event = require('../models/Event');
 const Favorite = require('../models/Favorite');
 const router = express.Router();
@@ -16,13 +17,8 @@ router.post('/list', async (req, res) => {
     const favorites = await Favorite.find({user: userId});
     if(token != null){
         events.forEach((event) => {
-            favorites.forEach((favorite) => {
-                if(favorite.event.equals(event._id)){
-                    event.isFavorite = true;
-                }else{
-                    event.isFavorite = false;
-                }
-            });
+            // Set isFavorite to true if any favorite matches this event
+            event.isFavorite = favorites.some(favorite => String(favorite.event) === String(event._id));
         });
     }
     res.json(events);
@@ -42,14 +38,15 @@ router.post('/favoritelist', async (req, res) => {
     var favoriteEvents = [];
     events.forEach((event) => {
         favorites.forEach((favorite) => {
-            if(favorite.event.equals(event._id)){
+            if(String(favorite.event) === String(event._id)){
                 favoriteEvents.push(event);
             }
         });
     });
     res.json(favoriteEvents);
   } catch (error) {
-    res.status(400).send(error.message);
+    console.error('Error in /favoritelist:', error);
+    res.status(400).json({ error: error.message, details: error });
   }
 });
 
@@ -59,19 +56,43 @@ router.post('/favorite', async (req, res) => {
     var token = "";
     if(req.body.token != "") token = req.body.token;
     const userId = jwt.verify(token, process.env.JWT_SECRET).userId;
-    const exists = await Favorite.findOne({user: userId, event: req.body.event});
+    
+    // Convert string ID to ObjectId if needed
+    const eventId = req.body.event;
+
+    const exists = await Favorite.findOne({user: userId, event: eventId});
     if(exists){
         await Favorite.findByIdAndDelete(exists._id);
+        res.status(200).json({ message: 'Favorite removed successfully!' });
     }else{
         const favorite = new Favorite({
             user: userId,
-            event: req.body.event
+            event: eventId
         });
         await favorite.save();
+        res.status(201).json({ message: 'Favorite added successfully!' });
     }
-    res.status(201).send('Favorite toggled successfully!');
   } catch (error) {
-    res.status(400).send(error.message);
+    console.error('Error in favorite endpoint:', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Check favorite status
+router.post('/favorite/check', async (req, res) => {
+  try {
+    var token = "";
+    if(req.body.token != "") token = req.body.token;
+    const userId = jwt.verify(token, process.env.JWT_SECRET).userId;
+    
+    // Convert string ID to ObjectId if needed
+    const eventId = req.body.event;
+
+    const exists = await Favorite.findOne({user: userId, event: eventId});
+    res.json({ isFavorite: !!exists });
+  } catch (error) {
+    console.error('Error in favorite check endpoint:', error);
+    res.status(400).json({ error: error.message });
   }
 });
 
