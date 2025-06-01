@@ -1,6 +1,10 @@
 import events from EventListView.vue
 <template>
-  <div class="event-detail">
+  <div class="event-detail" v-if="event">
+    <div style="float: right;" v-if="isLoggedIn">
+      <i class="pi pi-heart" id="heart" style="color: red; cursor: pointer; font-size: 18pt;" @click="favoriteEvent(event._id)" v-if="event.isFavorite"></i>
+      <i class="pi pi-heart" id="heart" style="cursor: pointer; font-size: 18pt;" @click="favoriteEvent(event._id)" v-else></i>
+    </div>
     <h1>{{ event.title }}</h1>
     <img class="detail-image" :src="event.image" alt="Event image" />
     <p><strong>Datums:</strong> {{ formatDate(event.date) }}</p>
@@ -23,10 +27,14 @@ import events from EventListView.vue
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { ref, computed } from 'vue';
+import { inject, ref, computed } from 'vue';
+import axios from 'axios';
 
 const route = useRoute();
-const id = parseInt(route.params.id);
+const id = route.params.id;
+
+
+var isLoggedIn = inject('isLoggedIn')
 
 const events = ref([
   {
@@ -281,7 +289,34 @@ const events = ref([
   }
 ]);
 
-const event = computed(() => events.value.find(e => e.id === id));
+const events = ref([]);
+
+axios.post('http://localhost:5000/api/event/list', {
+  token: localStorage.getItem("authToken")
+})
+.then((response) => {
+  events.value = response.data;
+})
+.catch((error) => {
+  console.log(error);
+})
+
+const event = computed(() => events.value.find(e => e._id === id));
+
+function favoriteEvent(eventId){
+  axios.post('http://localhost:5000/api/event/favorite', {
+    event: eventId,
+    token: localStorage.getItem("authToken")
+  })
+  .then((response) => {
+    var temp = event.value;
+    temp.isFavorite = !temp.isFavorite;
+    event.value = temp;
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+}
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString('lv-LV');

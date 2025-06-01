@@ -19,8 +19,8 @@
       </div> -->
       <router-link
         v-for="event in filteredEvents"
-        :key="event.id"
-        :to="{ name: 'EventDetail', params: { id: event.id } }"
+        :key="event._id"
+        :to="{ name: 'EventDetail', params: { id: event._id } }"
         class="event-card"
          style="text-decoration: none; color: inherit;">
         <img class="card-image" :src="event.image" />
@@ -133,7 +133,7 @@ p {
 <script setup>
 import { ref, computed } from 'vue';
 import { InputText } from 'primevue/inputtext';
-
+import axios from 'axios';
 import { Card } from 'primevue/card';
 import Dropdown from 'primevue/dropdown';
 import Calendar from 'primevue/calendar';
@@ -147,6 +147,18 @@ const selectedCategory = ref(null);
 const selectedDate = ref(null);
 
 const categories = ['Kultūra', 'Mūzika', 'Sports'];
+
+const events = ref([]);
+
+axios.post('http://localhost:5000/api/event/list', {
+  token: localStorage.getItem("authToken")
+})
+.then((response) => {
+  events.value = response.data;
+})
+.catch((error) => {
+  console.log(error);
+})
 
 const events = ref([
   {
