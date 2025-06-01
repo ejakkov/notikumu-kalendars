@@ -398,6 +398,24 @@ const events = ref([
     description: 'Leģendas, dziesmas un ugunskurs pie Alauksta ezera.',
     category: 'Literatūra',
     image: 'https://vecpiebalga.lv/images/gallery/f262108a67caf8abf3dd7c8c47251ebd/000/000/117/s1_11756.jpg'
+  },
+    {
+    id: 5,
+    title: 'J. Purviņa personīgā izstāde',
+    date: new Date('2025-08-18'),
+    location: 'Rīga',
+    description: 'Autora mākslas darbi.',
+    category: 'Koncerts',
+    image: 'https://www.jurmala.lv/sites/jurmala/files/styles/article_full_image_665x375_/public/gallery_images/buss.jpg?itok=hJOJ1mgs'
+  },
+  {
+    id: 6,
+    title: 'Jūrmalas festivāls',
+    date: new Date('2025-07-10'),
+    location: 'Jūrmala',
+    description: 'Pludmales pasākums.',
+    category: 'Festivāls',
+    image: 'https://media.timeout.com/images/106204051/1920/1440/image.webp'
   }
 ]);
 
